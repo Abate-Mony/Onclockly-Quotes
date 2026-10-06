@@ -2,21 +2,40 @@ import type { ReactNode } from 'react'
 import { Check } from 'lucide-react'
 
 // ---- Logo ----
-export function XeniaPureLogo({ size = 'md', onDark = false }: { size?: 'sm' | 'md' | 'lg'; onDark?: boolean }) {
+// Company name/logo are per-company (see CompanyContext) — this renders
+// whichever company the wizard is currently running for, never a
+// hardcoded brand. The droplet mark is a generic fallback icon shown when
+// a company has no logo uploaded, not brand-specific artwork.
+export function BrandLogo({
+  name,
+  logoUrl,
+  size = 'md',
+  onDark = false,
+}: {
+  name: string
+  logoUrl?: string | null
+  size?: 'sm' | 'md' | 'lg'
+  onDark?: boolean
+}) {
   const text = size === 'sm' ? 'text-lg' : size === 'lg' ? 'text-3xl' : 'text-xl'
   const badge = size === 'sm' ? 'h-7 w-7' : size === 'lg' ? 'h-10 w-10' : 'h-8 w-8'
   const icon = size === 'sm' ? 16 : size === 'lg' ? 22 : 18
   return (
     <div className={`flex items-center gap-2.5 ${text} font-serif font-semibold ${onDark ? 'text-white' : 'text-foreground'}`}>
-      <span className={`flex ${badge} shrink-0 items-center justify-center rounded-xl ${onDark ? 'bg-white/10' : 'bg-primary/10'}`}>
-        <svg width={icon} height={icon} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 2C12 2 7 6 7 11a5 5 0 0010 0c0-5-5-9-5-9z" fill="#1d4ed8" opacity="0.2"/>
-          <path d="M12 2C12 2 7 6 7 11a5 5 0 0010 0c0-5-5-9-5-9z" stroke="#1d4ed8" strokeWidth="1.5" strokeLinejoin="round"/>
-          <circle cx="12" cy="11" r="2" fill="#1d4ed8"/>
-          <path d="M9 18l-1 4M15 18l1 4M7 19h10" stroke="#1d4ed8" strokeWidth="1.5" strokeLinecap="round"/>
-        </svg>
+      <span className={`flex ${badge} shrink-0 items-center justify-center overflow-hidden rounded-xl ${onDark ? 'bg-white/10' : 'bg-primary/10'}`}>
+        {logoUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element -- arbitrary per-company remote URL, not a known-at-build-time asset
+          <img src={logoUrl} alt="" className="h-full w-full object-cover" />
+        ) : (
+          <svg width={icon} height={icon} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2C12 2 7 6 7 11a5 5 0 0010 0c0-5-5-9-5-9z" fill="#1d4ed8" opacity="0.2" />
+            <path d="M12 2C12 2 7 6 7 11a5 5 0 0010 0c0-5-5-9-5-9z" stroke="#1d4ed8" strokeWidth="1.5" strokeLinejoin="round" />
+            <circle cx="12" cy="11" r="2" fill="#1d4ed8" />
+            <path d="M9 18l-1 4M15 18l1 4M7 19h10" stroke="#1d4ed8" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        )}
       </span>
-      XeniaPure
+      {name}
     </div>
   )
 }
@@ -155,7 +174,7 @@ export function TextInput({
   error,
   required,
 }: {
-  label: string
+  label?: string
   placeholder?: string
   value: string
   onChange: (v: string) => void
@@ -167,9 +186,11 @@ export function TextInput({
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-sm font-medium text-label">
-        {label}{required && <span className="ml-0.5 text-danger">*</span>}
-      </label>
+      {label && (
+        <label className="text-sm font-medium text-label">
+          {label}{required && <span className="ml-0.5 text-danger">*</span>}
+        </label>
+      )}
       <input
         type={type}
         placeholder={placeholder}
@@ -224,10 +245,14 @@ export function TextArea({
 }
 
 // ---- Question Heading ----
-export function QuestionHeading({ title, subtitle }: { title: string; subtitle?: string }) {
+export function QuestionHeading({ title, subtitle, required }: { title: string; subtitle?: string; required?: boolean }) {
   return (
     <div className="mb-6 animate-fade-in-up">
-      <h2 className="font-serif text-2xl font-semibold leading-snug tracking-tight text-foreground sm:text-[1.75rem]">{title}</h2>
+      <h2 className="font-serif text-2xl font-semibold leading-snug tracking-tight text-foreground sm:text-[1.75rem]">
+        {title}
+        {required === true && <span className="ml-1 text-danger">*</span>}
+        {required === false && <span className="ml-2 align-middle text-xs font-sans font-normal text-muted-foreground">(optional)</span>}
+      </h2>
       {subtitle && <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{subtitle}</p>}
     </div>
   )

@@ -15,10 +15,12 @@ const dmSans = DM_Sans({
   weight: ["300", "400", "500", "600", "700"],
 });
 
+// Fallback only — every real page lives under /<slug> (a specific
+// company) and could override this with its own generateMetadata later.
+// Deliberately names no company here, since this app now serves any of them.
 export const metadata: Metadata = {
-  title: "Get a Free Cleaning Quote | XeniaPure",
-  description:
-    "Answer a few simple questions and get an accurate, no-obligation cleaning quote from XeniaPure — usually in under 3 minutes.",
+  title: "Get a Free Quote",
+  description: "Answer a few simple questions and get an accurate, no-obligation quote — usually in under 3 minutes.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

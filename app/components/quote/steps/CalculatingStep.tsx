@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Loader2 } from 'lucide-react'
-import { XeniaPureLogo } from '../components/Primitives'
+import { ResultHeader } from '../components/Layout'
 
 const STEPS = ['Reviewing your requirements…', 'Checking service area…', 'Calculating your quote…', 'Preparing your estimate…']
 
@@ -21,11 +21,7 @@ export function CalculatingScreen({ onDone }: { onDone: () => void }) {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <header className="border-b border-border bg-card px-4 py-4">
-        <div className="mx-auto max-w-xl">
-          <XeniaPureLogo size="sm" />
-        </div>
-      </header>
+      <ResultHeader />
       <main className="flex flex-1 items-center justify-center px-4">
         <div className="max-w-sm text-center">
           <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-secondary">

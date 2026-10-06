@@ -1,26 +1,25 @@
 import { CheckCircle2 } from 'lucide-react'
 import type { Answers } from '../types'
-import { getServiceLabel, estimatePrice } from '../flow'
-import { XeniaPureLogo } from '../components/Primitives'
+import { ResultHeader } from '../components/Layout'
+import { useCompany } from '../CompanyContext'
+import type { IndustryConfig } from '../configs/types'
 
-export function QuoteInstantScreen({ answers, quoteRef }: { answers: Answers; quoteRef: string }) {
-  const lines = estimatePrice(answers)
+export function QuoteInstantScreen({ answers, industry, quoteRef }: { answers: Answers; industry: IndustryConfig; quoteRef: string }) {
+  const company = useCompany()
+  const answersRecord = answers as unknown as Record<string, unknown>
+  const lines = industry.estimatePrice(answersRecord)
   const total = lines.reduce((s, l) => s + l.price, 0)
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-border bg-card px-4 py-4">
-        <div className="mx-auto max-w-2xl">
-          <XeniaPureLogo size="sm" />
-        </div>
-      </header>
+      <ResultHeader />
       <main className="mx-auto max-w-2xl px-4 py-8 sm:px-6 lg:py-12">
         <div className="mb-8 text-center">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
             <CheckCircle2 className="h-7 w-7 text-primary" strokeWidth={2} />
           </div>
           <h1 className="mb-2 font-serif text-3xl font-semibold text-foreground">Your estimated quote</h1>
-          <p className="text-sm text-muted-foreground">{getServiceLabel(answers.serviceType)} · {answers.postcode}</p>
+          <p className="text-sm text-muted-foreground">{industry.getServiceLabel(answers.serviceType)} · {answers.postcode}</p>
         </div>
 
         <div className="mb-4 overflow-hidden rounded-2xl border border-border bg-card shadow-soft">
@@ -49,7 +48,11 @@ export function QuoteInstantScreen({ answers, quoteRef }: { answers: Answers; qu
 
         <div className="mt-8 text-center">
           <p className="text-xs text-muted-foreground">Quote reference: QT-{quoteRef}</p>
-          <p className="mt-1 text-xs text-muted-foreground">Questions? Call <a href="tel:01249796848" className="font-medium text-primary">01249 796848</a></p>
+          {company.phone && (
+            <p className="mt-1 text-xs text-muted-foreground">
+              Questions? Call <a href={`tel:${company.phone.replace(/\s+/g, '')}`} className="font-medium text-primary">{company.phone}</a>
+            </p>
+          )}
         </div>
       </main>
     </div>

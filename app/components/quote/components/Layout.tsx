@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { ChevronLeft, Lock, Phone, Star, Trophy } from 'lucide-react'
-import { XeniaPureLogo, ProgressBar } from './Primitives'
+import { BrandLogo, ProgressBar } from './Primitives'
+import { useCompany } from '../CompanyContext'
 
 interface LayoutProps {
   children: ReactNode
@@ -15,7 +16,7 @@ interface LayoutProps {
 }
 
 const TRUST_ITEMS = [
-  { icon: Trophy, label: 'Trusted local service', sub: 'Chippenham & surrounding areas' },
+  { icon: Trophy, label: 'Trusted local service', sub: null },
   { icon: Lock, label: 'Secure & confidential', sub: 'Your details are safe with us' },
   { icon: Star, label: 'Highly rated', sub: 'Reviewed by hundreds of clients' },
 ]
@@ -31,15 +32,18 @@ export function QuizLayout({
   showNext = true,
   nextVariant = 'primary',
 }: LayoutProps) {
+  const company = useCompany()
+  const telHref = company.phone ? `tel:${company.phone.replace(/\s+/g, '')}` : undefined
+
   return (
     <div className="flex min-h-screen flex-col bg-background lg:flex-row">
 
       {/* ── Desktop sidebar ── */}
       <aside className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:flex lg:w-80 lg:shrink-0 lg:flex-col xl:w-96 bg-sidebar px-8 py-10">
-        <XeniaPureLogo size="md" onDark />
+        <BrandLogo name={company.name} logoUrl={company.logo} size="md" onDark />
         <div className="mb-auto mt-auto pt-16">
           <h2 className="mb-3 font-serif text-2xl font-semibold leading-snug text-white">
-            Get your free cleaning quote
+            Get your free quote
           </h2>
           <p className="mb-8 text-sm leading-relaxed text-sidebar-muted">
             Answer a few simple questions and we&rsquo;ll prepare an accurate quote for your property — usually in minutes.
@@ -67,16 +71,18 @@ export function QuizLayout({
               </span>
               <div>
                 <div className="text-sm font-medium text-white">{label}</div>
-                <div className="text-xs text-sidebar-muted-2">{sub}</div>
+                {sub && <div className="text-xs text-sidebar-muted-2">{sub}</div>}
               </div>
             </div>
           ))}
-          <div className="border-t border-sidebar-border pt-4">
-            <a href="tel:01249796848" className="flex items-center gap-2 text-xs text-sidebar-muted-2 transition-colors hover:text-white">
-              <Phone className="h-3 w-3" />
-              01249 796848
-            </a>
-          </div>
+          {telHref && (
+            <div className="border-t border-sidebar-border pt-4">
+              <a href={telHref} className="flex items-center gap-2 text-xs text-sidebar-muted-2 transition-colors hover:text-white">
+                <Phone className="h-3 w-3" />
+                {company.phone}
+              </a>
+            </div>
+          )}
         </div>
       </aside>
 
@@ -86,7 +92,7 @@ export function QuizLayout({
         {/* Mobile header only */}
         <header className="sticky top-0 z-10 border-b border-border bg-background/90 backdrop-blur-sm lg:hidden">
           <div className="px-4 pb-3 pt-4">
-            <XeniaPureLogo size="sm" />
+            <BrandLogo name={company.name} logoUrl={company.logo} size="sm" />
             {progress && (
               <div className="mt-3">
                 <ProgressBar current={progress.current} total={progress.total} />
@@ -147,25 +153,30 @@ export function QuizLayout({
 
 // Phone CTA for welcome screen
 export function PhoneCTA() {
+  const company = useCompany()
+  if (!company.phone) return null
   return (
     <a
-      href="tel:01249796848"
+      href={`tel:${company.phone.replace(/\s+/g, '')}`}
       className="mt-4 flex items-center justify-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
     >
       <Phone className="h-3.5 w-3.5" />
-      Need help? Call 01249 796848
+      Need help? Call {company.phone}
     </a>
   )
 }
 
 export function ResultHeader() {
+  const company = useCompany()
   return (
     <header className="border-b border-border bg-card px-4 py-4">
       <div className="mx-auto flex max-w-2xl items-center justify-between">
-        <XeniaPureLogo size="sm" />
-        <a href="tel:01249796848" className="hidden text-sm text-muted-foreground transition-colors hover:text-primary sm:block">
-          01249 796848
-        </a>
+        <BrandLogo name={company.name} logoUrl={company.logo} size="sm" />
+        {company.phone && (
+          <a href={`tel:${company.phone.replace(/\s+/g, '')}`} className="hidden text-sm text-muted-foreground transition-colors hover:text-primary sm:block">
+            {company.phone}
+          </a>
+        )}
       </div>
     </header>
   )

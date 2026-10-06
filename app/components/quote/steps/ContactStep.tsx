@@ -1,5 +1,6 @@
 import { Controller, type Control } from 'react-hook-form'
 import { TextInput } from '../components/Primitives'
+import { useCompany } from '../CompanyContext'
 
 export interface ContactFieldsData {
   firstName: string
@@ -10,6 +11,7 @@ export interface ContactFieldsData {
 }
 
 export function ContactFields({ control }: { control: Control<ContactFieldsData> }) {
+  const company = useCompany()
   return (
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-2 gap-3">
@@ -61,7 +63,7 @@ export function ContactFields({ control }: { control: Control<ContactFieldsData>
               className="mt-0.5 h-4 w-4 rounded border-border-strong accent-primary"
             />
             <span className="text-xs leading-relaxed text-muted-foreground">
-              I&apos;m happy to receive occasional news and offers from XeniaPure by email. You can unsubscribe at any time.
+              I&apos;m happy to receive occasional news and offers from {company.name} by email. You can unsubscribe at any time.
             </span>
           </label>
         )}

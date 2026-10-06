@@ -111,6 +111,121 @@ export const contactSchema = z.object({
   marketingConsent: z.boolean().default(false),
 })
 
+// ── End of tenancy ────────────────────────────────────────────────────
+export const eotFurnishedSchema = z.object({
+  furnished: z.enum(['Fully furnished', 'Part furnished', 'Unfurnished'], 'Choose one to continue.'),
+})
+export const eotExtrasSchema = z.object({
+  eotExtras: z.array(z.string()).default([]),
+})
+export const eotDatesSchema = z.object({
+  moveOutDate: z.string().optional(),
+  inspectionDate: z.string().optional(),
+})
+
+// ── Airbnb ────────────────────────────────────────────────────────────
+export const airbnbGuestsSchema = z.object({
+  guestCapacity: z.string().min(1, 'Choose the maximum guest capacity.'),
+})
+export const airbnbTurnoverSchema = z.object({
+  turnoverFrequency: z.enum(
+    ['Daily or near-daily', 'Several times a week', 'Weekly', 'A few times a month', 'Less frequently', "I'm not sure yet"],
+    'Choose one to continue.',
+  ),
+})
+export const airbnbServicesSchema = z.object({
+  airbnbServices: z.array(z.string()).default([]),
+})
+
+// ── Carpet & upholstery ───────────────────────────────────────────────
+export const carpetItemsSchema = z.object({
+  carpetItems: z.array(z.string()).min(1, 'Select at least one item.'),
+})
+export const carpetStainsSchema = z.object({
+  carpetStainDetails: z.array(z.string()).default([]),
+})
+
+// ── Oven ──────────────────────────────────────────────────────────────
+export const ovenTypeSchema = z.object({
+  ovenType: z.enum(['Single oven', 'Double oven', 'Range cooker', 'Aga-style cooker', 'Other / not sure'], 'Choose one to continue.'),
+})
+export const ovenExtrasSchema = z.object({
+  ovenExtras: z.array(z.string()).default([]),
+})
+
+// ── After-build ───────────────────────────────────────────────────────
+export const buildSiteSchema = z.object({
+  buildSiteType: z.enum(
+    ['Residential house', 'Residential flat / apartment', 'Commercial office', 'Retail / shop',
+      'Industrial / warehouse', 'School / education', 'Healthcare', 'Other'],
+    'Choose one to continue.',
+  ),
+})
+export const buildConditionSchema = z.object({
+  buildFinished: z.enum(['Yes — ready for cleaning', 'Nearly finished', 'Still in progress'], 'Choose one to continue.'),
+  buildCondition: z.array(z.string()).default([]),
+  buildDeadline: z.string().optional(),
+})
+
+// ── Commercial ────────────────────────────────────────────────────────
+export const commercialPremisesSchema = z.object({
+  commercialPremises: z.enum(
+    ['Office', 'Retail store', 'School / education', 'Clinic / dental / healthcare', 'Hospitality / restaurant',
+      'Warehouse / logistics', 'Industrial', 'Public building', 'Other'],
+    'Choose one to continue.',
+  ),
+})
+export const commercialSizeSchema = z.object({
+  commercialSize: z.enum(
+    ['Under 1,000 sq ft', '1,000–5,000 sq ft', '5,000–10,000 sq ft', '10,000–25,000 sq ft', 'Over 25,000 sq ft', "I'm not sure"],
+    'Choose one to continue.',
+  ),
+})
+export const commercialOccupancySchema = z.object({
+  commercialOccupancy: z.enum(['Under 10', '10–25', '26–50', '51–100', '100+', 'Not sure'], 'Choose one to continue.'),
+})
+export const commercialAreasSchema = z.object({
+  commercialAreas: z.array(z.string()).min(1, 'Select at least one area.'),
+})
+export const commercialFrequencySchema = z.object({
+  commercialFrequency: z.enum(['One-off', 'Daily', '2–3 times per week', 'Weekly', 'Fortnightly', 'Custom schedule'], 'Choose one to continue.'),
+})
+export const commercialHoursSchema = z.object({
+  commercialHours: z.enum(['Before opening hours', 'During working hours', 'After closing', 'Overnight', 'Flexible'], 'Choose one to continue.'),
+})
+export const commercialProviderSchema = z.object({
+  hasProvider: z.enum(['Yes', 'No'], 'Choose one to continue.'),
+})
+export const commercialImprovementsSchema = z.object({
+  improvements: z.array(z.string()).min(1, 'Select at least one.'),
+})
+export const commercialSpecialistSchema = z.object({
+  specialistReqs: z.array(z.string()).default([]),
+})
+export const commercialComplianceSchema = z.object({
+  complianceReqs: z.array(z.string()).default([]),
+})
+export const commercialSurveySchema = z.object({
+  siteSurvey: z.enum(['Yes', 'Maybe', 'I would prefer a remote quote first'], 'Choose one to continue.'),
+})
+
+// ── Facilities management ────────────────────────────────────────────
+export const fmServiceSchema = z.object({
+  fmServices: z.array(z.string()).min(1, 'Select at least one.'),
+})
+export const fmSiteSchema = z.object({
+  fmSiteType: z.enum(
+    ['Office / commercial', 'Industrial / warehouse', 'Retail', 'Healthcare', 'Education', 'Hospitality', 'Public sector', 'Mixed use', 'Other'],
+    'Choose one to continue.',
+  ),
+})
+export const fmRequirementSchema = z.object({
+  fmLocations: z.string().optional(),
+  fmDescription: z.string().optional(),
+  fmUrgency: z.string().optional(),
+  fmOngoing: z.string().optional(),
+})
+
 export const stepSchemas = {
   'service-type': serviceTypeSchema,
   'property-type': propertyTypeSchema,
@@ -129,6 +244,32 @@ export const stepSchemas = {
   'access': accessSchema,
   'free-text': freeTextSchema,
   'contact': contactSchema,
+  'eot-furnished': eotFurnishedSchema,
+  'eot-extras': eotExtrasSchema,
+  'eot-dates': eotDatesSchema,
+  'airbnb-guests': airbnbGuestsSchema,
+  'airbnb-turnover': airbnbTurnoverSchema,
+  'airbnb-services': airbnbServicesSchema,
+  'carpet-items': carpetItemsSchema,
+  'carpet-stains': carpetStainsSchema,
+  'oven-type': ovenTypeSchema,
+  'oven-extras': ovenExtrasSchema,
+  'build-site': buildSiteSchema,
+  'build-condition': buildConditionSchema,
+  'commercial-premises': commercialPremisesSchema,
+  'commercial-size': commercialSizeSchema,
+  'commercial-occupancy': commercialOccupancySchema,
+  'commercial-areas': commercialAreasSchema,
+  'commercial-frequency': commercialFrequencySchema,
+  'commercial-hours': commercialHoursSchema,
+  'commercial-provider': commercialProviderSchema,
+  'commercial-improvements': commercialImprovementsSchema,
+  'commercial-specialist': commercialSpecialistSchema,
+  'commercial-compliance': commercialComplianceSchema,
+  'commercial-survey': commercialSurveySchema,
+  'fm-service': fmServiceSchema,
+  'fm-site': fmSiteSchema,
+  'fm-requirement': fmRequirementSchema,
 } as const
 
 export type RoutedFormStep = keyof typeof stepSchemas

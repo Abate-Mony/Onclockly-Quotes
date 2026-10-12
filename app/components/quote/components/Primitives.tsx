@@ -198,7 +198,7 @@ export function TextInput({
         onChange={e => onChange(e.target.value)}
         onBlur={onBlur}
         className={`w-full rounded-xl border bg-card px-4 py-3
-          text-sm text-foreground placeholder-muted-foreground/60 shadow-soft outline-none transition-colors
+          text-base sm:text-sm text-foreground placeholder-muted-foreground/60 shadow-soft outline-none transition-colors
           ${error ? 'border-danger focus:border-danger focus:ring-4 focus:ring-danger/10' : 'border-border focus:border-primary focus:ring-4 focus:ring-primary/10'}`}
       />
       {error ? <p className="text-xs text-danger">{error}</p> : hint && <p className="text-xs text-muted-foreground">{hint}</p>}
@@ -236,7 +236,7 @@ export function TextArea({
         onChange={e => onChange(e.target.value)}
         onBlur={onBlur}
         className={`w-full resize-none rounded-xl border bg-card px-4 py-3
-          text-sm text-foreground placeholder-muted-foreground/60 shadow-soft outline-none transition-colors
+          text-base sm:text-sm text-foreground placeholder-muted-foreground/60 shadow-soft outline-none transition-colors
           ${error ? 'border-danger focus:border-danger focus:ring-4 focus:ring-danger/10' : 'border-border focus:border-primary focus:ring-4 focus:ring-primary/10'}`}
       />
       {error ? <p className="text-xs text-danger">{error}</p> : hint && <p className="text-xs text-muted-foreground">{hint}</p>}
